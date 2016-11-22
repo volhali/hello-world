@@ -1,3 +1,33 @@
+(function($){ //первая часть
+	$(document).ready(function(){
+		/*Добавить элементу div класс main - addClass();*/
+		$('div').addClass('main');
+		/*Поместить внутрь элемента div.main ненумерованный список ul - append();*/
+		$('div.main').append('<ul></ul>');
+		/*Добавить в элемент ul 10 пунктов li, в каждый из пунктов li добавить текст "Пункт 1" ("Пункт 2" и т.д.) - append();*/
+		for(var i=1;i<11;i++){
+			$('div.main ul').append('<li>'+'Пункт'+i+'</li>');
+		}
+		/*Обернуть содержимое пунктов li в тег span - wrapInner();*/
+		$('li').wrapInner('<span></span>');
+		/*
+		Каждому нечетному пункту li добавить класс second, установить в css для этого класса жирное начертание - addClass();*/
+		/*$('li:even').addClass('second');*/
+		  $('ul li:nth-child(odd)').addClass('second');
+		/*
+		Каждому пункту li добавить аттрибут order с его порядковым номером - attr();*/
+		$('li').attr('order',function(i){
+			return i;
+		});
+		/*
+		Удалить последний пункт li - remove();
+		Вставить в начале элемента div.main тег h3 текстом "Перечень работ" - prepend().*/
+		$('li:last').remove();
+
+	})
+
+})(jQuery)
+
 /*Задачи на html, text, css
 
 Для решения задач данного блока вам понадобятся следующие методы: html, text, css.
@@ -102,7 +132,7 @@
 
 38. Добавьте всем <li> в конец их порядковый номер.
 */
-(function($){
+/*(function($){
 
 	$(document).ready(function(){
 		/*$('h2').text('!!!!!!'); //1
@@ -156,7 +186,7 @@
 				$(elem).text(index);
 				}
 			);*/
-			$('li').each(
+			/*$('li').each(
 				function (index, elem){//38
 				$(elem).append(index);
 				}

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Homework №5</title>
+    <title>Homework №5_1</title>
     <script src="/jquery-3.1.1.min.js"></script>
     <style>
         .class1 {
@@ -37,7 +37,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Homework №5</title>
+    <title>Homework №5_2</title>
     <script src="/jquery-3.1.1.min.js"></script>
     <script>
     /*2.Разместить на странице абсолютно позиционированный элемент. При движении мыши по экрану устанавливать в качестве "координат" этого элемента "координаты" текущего положения курсора, т.е. элемент должен "прилипнуть" к курсору. Для решения использовать метод .mousemove().*/

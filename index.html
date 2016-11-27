@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <style>
+        .lp-wr {
+            max-width: 970px;
+            margin: 0 auto;
+        }
+        
+        header {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        
+        header ul.nav {}
+        
+        header ul.nav li {
+            display: inline-block;
+        }
+        
+        header ul.nav li a {
+            padding: 10px 30px;
+            color: #fff;
+            text-transform: uppercase;
+            transition: color .5s, padding .5s;
+        }
+        
+        header.top ul.nav li a {
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+        
+        header ul.nav li a:hover,
+        header ul.nav li a:focus,
+        header ul.nav li.active a {
+            background: none;
+            color: #11a820;
+        }
+        
+        .lp-content {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            min-height: 500px;
+            border: 1px dashed red;
+        }
+        
+        .lp-content h2 {
+            color: #11a820;
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 991px) {
+            .lp-wr {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+    </style>
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+
+                /* Панель навигации */
+                // Описываем функцию, которая
+                function lpHeader() {
+                    if ($(window).scrollTop() == 0) { // Если находимся в начале страницы
+                        $('header').addClass('top'); // Добавляет класс top для панели
+                    } else { // Иначе
+                        $('header.top').removeClass('top'); // Удаляет его
+                    }
+                }
+                // Вызываем эту функцию
+                lpHeader(); // Единожды при загрузке страницы
+                $(window).on('scroll', lpHeader); // И каждый раз при скролле
+
+                /* Плавный скролл при клике на ссылку в меню */
+                // Помещаем набор ссылок в переменную
+                var lpMenuItems = $('ul.nav li a');
+                // Для каждой ссылке в наборе
+                lpMenuItems.each(function () {
+                    // Помещаем в переменные
+                    var link = $(this), // Саму ссылку
+                        linkHref = link.attr('href'), // Путь, на который она ссылается
+                        linkTrgt = $(linkHref),
+                        attr=$(linkHref).attr('data-otst'); // Объект, на который она ссылается
+                        
+               
+                    // Если таковой объект существует
+                    if (linkTrgt.length > 0) {
+                        // То добавляем обработчик на клик по ссылке
+                        link.on('click', function (e) {
+                            // Отменяем переход по умолчанию
+                            e.preventDefault();
+                            // Вычисляем отступ до объекта-назначения
+                            var offset = linkTrgt.offset().top;
+                            console.log(offset);
+                            console.log(offset - attr);
+                            // И плавно скроллим страницу к этой точке
+                            $('body, html').animate({
+                                scrollTop: offset - attr
+                            }, 750);
+                        });
+                    }
+                });
+
+                /* Отслеживание активного экрана */
+                // Объявляем массив
+                var lpNavItems = [];
+                // Описываем функцию, которая
+                function lpSetNavItems() {
+                    // Помещает в массив для каждого экрана
+                    $('section').each(function () {
+                        lpNavItems.push({
+                            top: $(this).offset().top, // Его отступ от начала экрана
+                            name: $(this).attr('id') // Значение ID
+                        });
+                    });
+                }
+                // Вызываем эту функцию
+                lpSetNavItems(); // Единожды при загрузке страницы
+                $(window).on('resize', lpSetNavItems); // И каждый раз при изменении размера окна
+
+                // Описываем функцию, которая вычисляет активный экран
+                function lpSetNavActive() {
+                    // В этой переменной в конце forEach будет ID активного экрана
+                    var curItem = '';
+                    // Чтобы он туда попал, перебираем все экраны
+                    lpNavItems.forEach(function (item) {
+                        // И если положение экрана от начала страницы меньше текущего скролла
+                        if ($(window).scrollTop() > item.top - 200) {
+                            curItem = item.name; // В переменную вносим ID этого экрана
+                        }
+                    });
+                    // Далее, если href ссылки внутри активного пункта меню не совпадает с ID найденного нами активного экрана
+                    // Либо активные элементы отсутствуют в меню
+                    if ($('ul.nav li.active a').attr('href') != '#' + curItem || $('ul.nav li.active').length == 0) {
+                        // Удаляем класс у текущего активного элемента
+                        $('ul.nav li.active').removeClass('active');
+                        // И добавляем класс active пункту, внутри которого лежит ссылка, у которой href совпал с ID активного экрана 
+                        $('ul.nav li a[href="#' + curItem + '"]').parent().addClass('active');
+                    }
+                }
+                // Вызываем эту функцию
+                lpSetNavActive(); // Единожды при загрузке страницы
+                $(window).on('scroll', lpSetNavActive); // И каждый раз при скролле
+
+            });
+        })(jQuery);
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <div class="lp-wr">
+            <ul class="nav">
+                <li>
+                    <a href="#slideshow">Главная</a>
+                </li>
+                <li>
+                    <a href="#services">Услуги</a>
+                </li>
+                <li>
+                    <a href="#prices">Цены</a>
+                </li>
+                <li>
+                    <a href="#portfolio">Работы</a>
+                </li>
+                <li>
+                    <a href="#contacts">Контакты</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <section id="slideshow" data-otst="0">
+        <div class="lp-wr">
+            <div class="lp-content"></div>
+        </div>
+    </section>
+
+    <section id="services" data-otst="40">
+        <div class="lp-wr">
+            <div class="lp-content">
+                <h2>Наши услуги</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque tempore ea modi, itaque necessitatibus culpa sequi iste nam porro eligendi voluptatibus aperiam eum, facere cupiditate non dolore doloremque unde! Corrupti.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="prices" data-otst="30">
+        <div class="lp-wr">
+            <div class="lp-content">
+                <h2>Наши цены</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque tempore ea modi, itaque necessitatibus culpa sequi iste nam porro eligendi voluptatibus aperiam eum, facere cupiditate non dolore doloremque unde! Corrupti.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" data-otst="20">
+        <div class="lp-wr">
+            <div class="lp-content">
+                <h2>Наши работы</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque tempore ea modi, itaque necessitatibus culpa sequi iste nam porro eligendi voluptatibus aperiam eum, facere cupiditate non dolore doloremque unde! Corrupti.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacts" data-otst="10">
+        <div class="lp-wr">
+            <div class="lp-content">
+                <h2>Контакты</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque tempore ea modi, itaque necessitatibus culpa sequi iste nam porro eligendi voluptatibus aperiam eum, facere cupiditate non dolore doloremque unde! Corrupti.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer></footer>
+
+</body>
+
+</html>

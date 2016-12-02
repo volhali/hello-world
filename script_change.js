@@ -87,114 +87,80 @@
             navigation: true,
             navigationText: ['<i class="fa fa-arrow-left"></i>', '<i class="fa fa-arrow-right"></i>']
         });
-                    /*DZ7*/
+        /*--------------------DZ7---------------------------------*/
         $('.lp-slider2').owlCarousel({
             navigation: true,
             navigationText: ['<i class="fa fa-arrow-left"></i>', '<i class="fa fa-arrow-right"></i>'],
             itemsCustom: [[0, 1], [400, 3], [900, 5]],
-            afterInit:function(){
+            afterInit: function () {
                 console.log('Инициализация');
             },
-            afterMove:function(){
+            afterMove: function () {
                 console.log('Переключение слайда');
-               /* console.log(this.currentItem);*/
+                /* console.log(this.currentItem);*/
             },
-            afterUpdate:function(){
+            afterUpdate: function () {
                 console.log('Изменение размера слайдера');
             }
 
         });
 
-       var go = $('#go');
-       go.click(function(){
+        var go = $('#go');
+        go.click(function () {
             var curSlide = $('#numSlide').val();
-             console.log(curSlide);
-             owl.trigger('owl.goTo',+curSlide-1);
-       });
-                    /*end DZ7*/
+            console.log(curSlide);
+             $('.lp-slider2').trigger('owl.goTo', +curSlide - 1);
+        });
+        /*end DZ7*/
 
         var lp_slider3 = $('.lp-slider3');
         var lp_slider4 = $('.lp-slider4');
 
         lp_slider3.owlCarousel({
-            singleItem : true,
-            slideSpeed : 1000,
+            singleItem: true,
+            slideSpeed: 1000,
             navigation: true,
-            pagination:false,
-            afterAction : syncPosition,
-            responsiveRefreshRate : 200
+            pagination: false,
+            /*afterAction: syncPosition,*/
+            responsiveRefreshRate: 200
         });;
 
-        var cur = lp_slider4.owlCarousel({
-          items : 3,
-          itemsDesktop      : [1199,3],
-          itemsDesktopSmall : [979,3],
-          itemsTablet       : [768,3],
-          itemsMobile       : [479,2],
-          pagination:false,
-          responsiveRefreshRate : 100,
-          afterInit : function(el){
-          el.find(".owl-item").eq(0).addClass("active");
-          }
+        lp_slider4.owlCarousel({
+            items: 3,
+            itemsDesktop: [1199, 3],
+            itemsDesktopSmall: [979, 3],
+            itemsTablet: [768, 3],
+            itemsMobile: [479, 2],
+            pagination: false,
+            responsiveRefreshRate: 100,
         });
 
-        function syncPosition(el){
-          var current = this.currentItem;
-          lp_slider4
-            .find(".owl-item")
-            .removeClass("active")
-            .eq(current)
-            .addClass("active")
-/*          if(lp_slider4.data("lp-slider4") !== undefined){
-            center(current)
-          }*/
-        }
+      /*  function syncPosition(el) {
+            var current = this.currentItem;
+            lp_slider4
+                .find(".owl-item")
+                .removeClass("active")
+                .eq(current)
+                .addClass("active")
 
-        lp_slider4.on("click", ".owl-item", function(e){
-          e.preventDefault();
-          var number = $(this).data("owl-item");
-          console.log(number);
-          lp_slider3.trigger("owl.goTo",number);
-          
-            lp_slider4.trigger("owl.goTo",number-1);
-         
-        });
-
-         lp_slider3.on("click", ".owl-item", function(e){
-          e.preventDefault();
-          var number = $(this).data("owl-item");
-          console.log(number);
-          lp_slider4.trigger("owl.goTo",number-1);
-          
-       
-        });
-
-        /*function center(number){
-          var lp_slider4visible = lp_slider4.data("lp_slider4").owl.visibleItems;
-
-          var num = number;alert(num);
-          var found = false;
-          for(var i in lp_slider4visible){
-            if(num === lp_slider4visible[i]){
-              var found = true;
-            }
-          }
-
-          if(found===false){
-            if(num>lp_slider4visible[lp_slider4visible.length-1]){
-              lp_slider4.trigger("owl.goTo", num - lp_slider4visible.length+2)
-            }else{
-              if(num - 1 === -1){
-                num = 0;
-              }
-              lp_slider4.trigger("owl.goTo", num);
-            }
-          } else if(num === lp_slider4visible[lp_slider4visible.length-1]){
-            lp_slider4.trigger("owl.goTo", lp_slider4visible[1])
-          } else if(num === lp_slider4visible[0]){
-            lp_slider4.trigger("owl.goTo", num-1)
-          } 
         }*/
 
+        lp_slider4.on("click", ".owl-item", function (e) {
+            e.preventDefault();
+            var number = $(this).index();
+            console.log(number);
+            lp_slider3.trigger("owl.goTo", number);
+
+            lp_slider4.trigger("owl.goTo", number - 1);
+
+        });
+        
+        
+        lp_slider3.on("mouseenter", ".owl-item", function (e) {
+            e.preventDefault();
+            var number = $(this).data("owl-item");
+            console.log(number);
+            lp_slider4.trigger("owl.goTo", number - 1);
+        });
     });
 })(jQuery);
